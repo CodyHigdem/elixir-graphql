@@ -9,11 +9,28 @@
 defmodule PlateSlateWeb.Schema do
   use Absinthe.Schema
 
+  #
+  # Absinthe.Schema.lookup_type(PlateSlateWeb.Schema, ​"​​RootQueryType"​)
+  #
   query do
-    # <<Ignore this for now>>
+    # list_of Absinth macro that can use to indicate a field returns a list of a specific type
+    # menuItems is the GraphQL convention, Absinth converts this
+    field :menu_items, list_of(:menu_item) do
+      resolve fn _,_,_ ->
+        {:ok, Repo.all(Menu.Item)} #PlateSlate.Repo.all(PlateSlate.Menu.Item)
+      end
+    end
+
   end
 
   object :menu_item do
-    # <<We'll add fields soon>>
+    '''
+      Adding a field to an objecty type is as simple as using the 'field' macro
+      the macro takes an identifier atom, a type reference, optional keywoard list of attributes
+      and an optional block for more in-depth configuration
+    '''
+    field :id, :id
+    field :name, :string
+    field :description, :string
   end
 end
