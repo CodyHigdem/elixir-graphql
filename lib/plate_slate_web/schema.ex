@@ -9,13 +9,19 @@
 defmodule PlateSlateWeb.Schema do
   use Absinthe.Schema
 
+  alias PlateSlate.{Menu, Repo}
+
+
   #
   # Absinthe.Schema.lookup_type(PlateSlateWeb.Schema, ​"​​RootQueryType"​)
   #
   query do
     # list_of Absinth macro that can use to indicate a field returns a list of a specific type
     # menuItems is the GraphQL convention, Absinth converts this
-    field :menu_items, list_of(:menu_item) do
+
+    @desc "The list of available items on the menu"
+    field :menu_items, list_of(:menu_item), description: "The list of available items on the menu" do
+
       resolve fn _,_,_ ->
         {:ok, Repo.all(Menu.Item)} #PlateSlate.Repo.all(PlateSlate.Menu.Item)
       end
